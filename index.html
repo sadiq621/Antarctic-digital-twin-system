@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antarctic Research Stations | Digital Twin</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="emblem">🇮🇳</div>
+      <div>
+        <div class="brand-title">Antarctic Research Stations</div>
+        <div class="brand-sub">Digital Twin & Remote Management Platform</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="live-dot"></span><span>System Online</span>
+      <button class="outline-btn" onclick="toggleDemo()">Demo Mode</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <button class="nav-item active" data-section="dashboard">Dashboard</button>
+    <button class="nav-item" data-section="infrastructure">Infrastructure</button>
+    <button class="nav-item" data-section="energy">Energy</button>
+    <button class="nav-item" data-section="logistics">Logistics</button>
+    <button class="nav-item" data-section="alerts">Alerts</button>
+  </nav>
+
+  <main>
+    <section id="dashboard" class="section active">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">MINISTRY OF EARTH SCIENCES • DEMO PROTOTYPE</p>
+          <h1>National Antarctic Station Control Dashboard</h1>
+          <p class="muted">Unified digital twin view for remote monitoring of Maitri and Bharati research stations.</p>
+        </div>
+        <div class="station-switch">
+          <label>Station</label>
+          <select id="stationSelect" onchange="refreshDashboard()">
+            <option>Maitri</option>
+            <option>Bharati</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="status-strip">
+        <span><b>Last sync:</b> <span id="syncTime">Just now</span></span>
+        <span><b>Data mode:</b> Simulated telemetry</span>
+        <span><b>Connectivity:</b> Stable</span>
+      </div>
+
+      <div class="cards">
+        <article class="card metric"><div class="metric-top"><span>Ambient Temperature</span><span class="icon">°C</span></div><strong id="temp">-18.4°C</strong><small>Within operating range</small></article>
+        <article class="card metric"><div class="metric-top"><span>Power Availability</span><span class="icon">⚡</span></div><strong id="power">86%</strong><small>Hybrid energy system</small></article>
+        <article class="card metric"><div class="metric-top"><span>Battery Storage</span><span class="icon">🔋</span></div><strong id="battery">74%</strong><small>Estimated 18.2 h backup</small></article>
+        <article class="card metric"><div class="metric-top"><span>Fuel Reserve</span><span class="icon">▣</span></div><strong id="fuel">63%</strong><small>Projected 21 days</small></article>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <div class="card-head"><div><h2>Station Digital Twin</h2><p class="muted">Live operational model</p></div><span class="badge good">Operational</span></div>
+          <div class="station-map">
+            <div class="ice"></div>
+            <div class="station-building"><span>MAIN HABITAT</span><b>MAITRI</b></div>
+            <div class="node n1">Power</div><div class="node n2">Weather</div><div class="node n3">Comms</div>
+            <div class="route r1"></div><div class="route r2"></div>
+          </div>
+          <div class="legend"><span><i class="green"></i> Normal</span><span><i class="amber"></i> Attention</span><span><i class="red"></i> Critical</span></div>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><div><h2>Environmental Telemetry</h2><p class="muted">24-hour simulated readings</p></div></div>
+          <canvas id="telemetryChart" height="190"></canvas>
+        </article>
+      </div>
+
+      <div class="grid-3">
+        <article class="card mini-panel"><h3>Personnel</h3><strong>42</strong><p>34 researchers • 8 support staff</p><span class="progress"><i style="width:72%"></i></span></article>
+        <article class="card mini-panel"><h3>Network Link</h3><strong>98.7%</strong><p>Availability over last 24 hours</p><span class="progress"><i style="width:98%"></i></span></article>
+        <article class="card mini-panel"><h3>Open Maintenance</h3><strong>06</strong><p>2 high priority • 4 routine</p><span class="progress"><i style="width:34%"></i></span></article>
+      </div>
+    </section>
+
+    <section id="infrastructure" class="section">
+      <div class="page-head"><div><p class="eyebrow">ASSET MONITORING</p><h1>Infrastructure Health</h1><p class="muted">Remote condition monitoring of critical station assets.</p></div></div>
+      <div class="table-card card">
+        <table><thead><tr><th>Asset</th><th>Subsystem</th><th>Health</th><th>Telemetry</th><th>Last Service</th></tr></thead>
+        <tbody>
+          <tr><td>Generator G-01</td><td>Power</td><td><span class="badge good">Healthy</span></td><td>1,842 RPM</td><td>12 Sep 2026</td></tr>
+          <tr><td>Solar Array S-02</td><td>Renewable</td><td><span class="badge good">Healthy</span></td><td>78% output</td><td>28 Aug 2026</td></tr>
+          <tr><td>HVAC Unit H-03</td><td>Habitat</td><td><span class="badge warn">Attention</span></td><td>Filter ΔP high</td><td>02 Jul 2026</td></tr>
+          <tr><td>Satellite Link C-01</td><td>Communications</td><td><span class="badge good">Healthy</span></td><td>42 ms latency</td><td>19 Aug 2026</td></tr>
+          <tr><td>Water Plant W-01</td><td>Utilities</td><td><span class="badge good">Healthy</span></td><td>94% capacity</td><td>30 Aug 2026</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section id="energy" class="section">
+      <div class="page-head"><div><p class="eyebrow">ENERGY MANAGEMENT</p><h1>Energy & Power</h1><p class="muted">Generation, consumption and storage overview.</p></div></div>
+      <div class="cards">
+        <article class="card metric"><span>Generation</span><strong>412 kW</strong><small>Solar + diesel hybrid</small></article>
+        <article class="card metric"><span>Consumption</span><strong>356 kW</strong><small>86% of available generation</small></article>
+        <article class="card metric"><span>Storage</span><strong>74%</strong><small>Battery state of charge</small></article>
+        <article class="card metric"><span>Efficiency</span><strong>91.2%</strong><small>System efficiency</small></article>
+      </div>
+      <article class="card"><div class="card-head"><h2>Power Demand Profile</h2><span class="badge good">Stable</span></div><canvas id="energyChart" height="110"></canvas></article>
+    </section>
+
+    <section id="logistics" class="section">
+      <div class="page-head"><div><p class="eyebrow">SUPPLY CHAIN</p><h1>Logistics & Inventory</h1><p class="muted">Track essential supplies and upcoming logistics operations.</p></div></div>
+      <div class="grid-2">
+        <article class="card"><h2>Critical Inventory</h2><div class="inventory"><div><span>Food supplies</span><b>82%</b></div><div><span>Medical supplies</span><b>91%</b></div><div><span>Technical spares</span><b>58%</b></div><div><span>Fuel drums</span><b>63%</b></div></div></article>
+        <article class="card"><h2>Upcoming Logistics</h2><ul class="timeline"><li><b>28 Sep</b><span>Resupply planning review</span></li><li><b>04 Oct</b><span>Fuel inventory verification</span></li><li><b>11 Oct</b><span>Maintenance spares dispatch</span></li></ul></article>
+      </div>
+    </section>
+
+    <section id="alerts" class="section">
+      <div class="page-head"><div><p class="eyebrow">EVENT MANAGEMENT</p><h1>Alerts & Incidents</h1><p class="muted">Prioritized operational events for remote teams.</p></div><button class="primary-btn" onclick="ackAll()">Acknowledge all</button></div>
+      <div id="alertsList" class="alerts">
+        <div class="alert critical"><div><b>HVAC differential pressure high</b><p>Filter replacement recommended within 48 hours.</p></div><span>HIGH</span></div>
+        <div class="alert warning"><div><b>Technical spare inventory below threshold</b><p>Current stock: 58%. Review next resupply manifest.</p></div><span>MEDIUM</span></div>
+        <div class="alert info"><div><b>Satellite link handover completed</b><p>Communications operating normally.</p></div><span>INFO</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Prototype for Smart India Hackathon • PS 26060</span>
+    <span>Digital Twin Demonstration • Simulated data</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

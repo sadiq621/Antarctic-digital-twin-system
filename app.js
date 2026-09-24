@@ -1,0 +1,10 @@
+const navItems=document.querySelectorAll('.nav-item');
+navItems.forEach(btn=>btn.addEventListener('click',()=>{navItems.forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(btn.dataset.section).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}));
+let demo=false;
+function toggleDemo(){demo=!demo; document.querySelector('.outline-btn').textContent=demo?'Live Simulation On':'Demo Mode';}
+function refreshDashboard(){document.getElementById('syncTime').textContent='Just now';}
+function ackAll(){document.getElementById('alertsList').innerHTML='<div class="card" style="text-align:center;padding:30px"><b>No unacknowledged alerts</b><p class="muted">All current events have been acknowledged.</p></div>';}
+const labels=['00','04','08','12','16','20','24'];
+new Chart(document.getElementById('telemetryChart'),{type:'line',data:{labels,datasets:[{label:'Temperature °C',data:[-21,-20,-19,-17,-16,-18,-18.4],borderColor:'#286c8d',backgroundColor:'rgba(40,108,141,.08)',fill:true,tension:.35,pointRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#edf1f4'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('energyChart'),{type:'line',data:{labels:['00','04','08','12','16','20','24'],datasets:[{label:'Demand kW',data:[310,325,350,390,410,372,356],borderColor:'#315f78',tension:.35,pointRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#edf1f4'}},x:{grid:{display:false}}}}});
+setInterval(()=>{if(!demo)return;const t=(-18.4+(Math.random()-.5)*1.2).toFixed(1);document.getElementById('temp').textContent=t+'°C';document.getElementById('syncTime').textContent=new Date().toLocaleTimeString();},2500);
